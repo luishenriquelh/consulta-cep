@@ -2,22 +2,21 @@ import { useState } from 'react'
 import { FiSearch } from 'react-icons/fi';
 import api from '../services/api';
 import '../style.css';
+import Notificacao from './Notificacao';
 
 function Pesquisa(){
 
     const [input, setInput] = useState('');
     const [cep, setCep] = useState({});
 
-    const [showMessage, setShowMessage] = useState(false)
+    const [showMensagem, setShowMensagem] = useState('');
 
  
-    const textTop = "Buscador CEP"    
-    const inputCep = <input/>
-    const button = <button>CONSULTAR</button>
+    const textTop = "Buscador CEP"
 
     async function handleSeach(){
         if(input === ""){
-            alert("preencha algum CEP");
+            setShowMensagem(<Notificacao texto="Por favor preencha com CEP" type="error" />)
             setInput('');
             return;
         }
@@ -26,16 +25,17 @@ function Pesquisa(){
           const response = await api.get(`${input}/json`);
           setCep(response.data);
           setInput('');
+          setShowMensagem('');
           
             if (Object.keys(response.data).length === 1) {
-                alert("Verifique o campo preenchido e tente novamente!");
+                setShowMensagem(<Notificacao texto="Não foi encontrado esse CEP" type="error" />)
                 setInput('');
                 return;
 
             } 
           
         }catch{
-            alert("Erro ao buscar CEP");
+            setShowMensagem(<Notificacao texto="Erro ao buscar CEP" type="error" />)
             setInput('');
             return;
         }
@@ -57,7 +57,7 @@ function Pesquisa(){
                         <FiSearch size={25} color="#FFF" />
                     </button>
                 </div>
-
+                {showMensagem}
                 {Object.keys(cep).length > 1 && (
                     <main className="main">
                         <h2>CEP: {cep.cep}</h2>

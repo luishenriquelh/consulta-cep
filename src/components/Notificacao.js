@@ -5,11 +5,12 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { StyledEngineProvider } from '@mui/material/styles';
 
-function Notificacao(){
+function Notificacao(props: {texto: string, type: string}){
+
     return(
         <>
-            <Alert variant="filled" severity="error">
-            This is an error alert — check it out!
+            <Alert variant="filled" severity={props.type} >
+            {props.texto}!
             </Alert>
         </>
     );
