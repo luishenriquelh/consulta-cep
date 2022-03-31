@@ -3,6 +3,7 @@ import { FiSearch } from 'react-icons/fi';
 import api from '../services/api';
 import '../style.css';
 import Notificacao from './Notificacao';
+import ResultadoCep from './ResultadoCep';
 
 function Pesquisa(){
 
@@ -12,7 +13,7 @@ function Pesquisa(){
     const [showMensagem, setShowMensagem] = useState('');
 
  
-    const textTop = "Buscador CEP"
+    const textTop = "Qual o seu CEP?"
 
     async function handleSeach(){
         if(input === ""){
@@ -28,7 +29,7 @@ function Pesquisa(){
           setShowMensagem('');
           
             if (Object.keys(response.data).length === 1) {
-                setShowMensagem(<Notificacao texto="Não foi encontrado esse CEP" type="error" />)
+                setShowMensagem(<Notificacao texto="Não foi encontrado o CEP" type="error" />)
                 setInput('');
                 return;
 
@@ -59,16 +60,8 @@ function Pesquisa(){
                 </div>
                 {showMensagem}
                 {Object.keys(cep).length > 1 && (
-                    <main className="main">
-                        <h2>CEP: {cep.cep}</h2>
-                        <span>Rua: {cep.logradouro}</span>
-                        <span>Complemento: {cep.complemento}</span>
-                        <span>Bairro: {cep.bairro}</span>
-                        <span>Cidade: {cep.localidade}</span>
-                        <span>Estado: {cep.uf}</span>
-                    </main>
-                )} 
-
+                    <ResultadoCep data={cep}/>
+                )}
             </div>
         </>
     );
